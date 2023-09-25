@@ -12,7 +12,13 @@ import TaskItem from "./components/TaskItem";
 import AddTask from "./components/AddTask";
 
 const Task = () => {
+  const [showModal, setShowModal] = useState(false);
   const [taskList, setTaskList] = useState([]);
+
+  //Handle Modal
+  const handleModal = () => {
+    setShowModal(true);
+  };
 
   //Add Task Button
   const handleAddTaskButton = (task) => {
@@ -21,6 +27,7 @@ const Task = () => {
         ...prevTasks,
         { task: task, id: Math.random().toString() },
       ]);
+      handleHideModal();
     }
   };
 
@@ -29,10 +36,20 @@ const Task = () => {
     setTaskList((currentList) => currentList.filter((t) => t.id !== id));
   };
 
+  //Hide modal
+  const handleHideModal = () => {
+    setShowModal(false);
+  };
+
   return (
     <View style={styles.container}>
-      <AddTask handleAddTaskButton={handleAddTaskButton} />
-
+      {showModal && (
+        <AddTask
+          handleHideModal={handleHideModal}
+          handleAddTaskButton={handleAddTaskButton}
+        />
+      )}
+      <Button title="ADD TASK" onPress={handleModal} />
       <Text style={styles.border}></Text>
       {taskList.length > 0 ? (
         <Text style={styles.textTitle}>Your Task :</Text>
